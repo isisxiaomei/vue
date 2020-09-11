@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue.extend()</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="mount-point"></div>
+    <script>
+      var VmSon = Vue.extend({
+        template: '<p>{{firstName}}--{{lastName}}</p>',
+        // 备注： 在Vue.extend中data必须是函数
+        data: function(){
+          return {
+            firstName: 'xu',
+            lastName: 'xiaomei'
+          }
+        }
+      })
+
+      // 将创建的新vue实例挂载到元素上
+      new VmSon().$mount('#mount-point')
+    </script>
+  </body>
+</html>

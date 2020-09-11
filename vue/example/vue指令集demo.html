@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>v-if&&v-else&&v-show</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for="item of itemsSort">{{ item }}--{{items}}</li>
+      </ul>
+      <ul>
+        <li v-for="student in studentsResults">
+          {{ student.name }} -- {{ student.age }}
+        </li>
+      </ul>
+      <ul>
+        <li v-for="(per, key, index)  in person">
+          {{ index }} : {{ key }} : {{ per }}
+        </li>
+      </ul>
+    </div>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            items: [1, 6, 3, 42, 28, 7, 9, 8],
+            students: [
+              { name: "a", age: 10 },
+              { name: "b", age: 5 },
+              { name: "c", age: 30 },
+              { name: "d", age: 2 },
+            ],
+            person: {
+              name: "xiaomei",
+              age: 18,
+              habby: "game",
+            },
+          };
+        },
+        computed: {
+          studentsResults: (vm) => vm.students.sort(myStudentSort),
+          itemsSort: function () {
+             return this.items.sort(myItermSort);
+          },
+        },
+      });
+
+      function myStudentSort(a, b) {
+        return a.age - b.age;
+      }
+
+      function myItermSort(a, b) {
+        return a - b;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>v-if&&v-else&&v-show</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      <img v-bind:src="url" />
+      <div class="classA">0.静态绑定class属性值</div>
+      <!-- <div :class="classA">v-bind上绑定除对象和数组之外的属性值只能从data中获取，不能像静态class一样直接获取到classA</div> -->
+      <div :class="className">1.绑定class属性值</div>
+      <!-- [className]动态属性 -->
+      <div :class="[className]">xxxxxx</div>
+      <div :class="{classB: isRed}">2.绑定class对象</div>
+      <div :class="classComputed">3.计算属性绑定class属性值</div>
+      <div :class="classObjectComputed">4.计算属性绑定class中的对象</div>
+      <div :class="['classA', 'classB']">5.绑定静态数组</div>
+      <div :class="[isRed ? 'classA' : '', isFont ? 'classB' : '']">6.三目表达式动态控制样式</div>
+    </div>
+
+    <style>
+      .classA {
+        color: red;
+      }
+      .classB {
+        font-size: 150%;
+      }
+    </style>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            url: "",
+            className: "classA",
+            isRed: true,
+            isFont: true,
+          };
+        },
+        computed: {
+          classComputed: (vm) => {
+            return vm.className;
+          },
+          classObjectComputed: (vm) => {
+            return {
+                classA: vm.isRed,
+                classB: vm.isFont
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

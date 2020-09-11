@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <!-- View层 -->
+    <div id="app">{{ message }}</div>
+    <script>
+        // vm实例就相当于VM层 数据监听双向绑定
+      var vm = new Vue({
+        el: "#app",
+        // 这里的data就是Mode层数据可以从后端获取也可以自定义
+        data: {
+          message: "hello Vue",
+        },
+      });
+    </script>
+  </body>
+</html>
