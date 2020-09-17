@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- myCpn自定义组件写成my-cpn  cpnList是子组件props中声明的属性写成cpn-list，接受父组件传递的属性-->
+        <my-cpn :cpn-list="list" :cpn-pers-info="persInfo"></my-cpn>
+    </div>
+    <script>
+        Vue.component('myCpn', {
+            // 在子组件的模板中使用子组件props中的属性
+            template: `<div>
+                        <h1>我是子组件myCpn</h1>
+                        <h1>接收到的数据：{{cpnList}}</h1>
+                        <h1>接收到的数据：{{cpnPersInfo}}</h1>
+                    </div>`,
+            props: ['cpnList', 'cpnPersInfo']
+        });
+        var vm = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    list: ['数码', '家电', '旅行'],
+                    persInfo: {
+                        name: 'Bob',
+                        age: 20
+                    },
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

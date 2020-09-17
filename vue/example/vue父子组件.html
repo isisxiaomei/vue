@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <!-- 父子关系1 -->
+    <!-- div#app是父组件的模板
+        <div id="app">
+        <cpn></cpn>
+    </div>
+    <script>
+        // cpn的template是子组件cpn的模板
+        Vue.component('cpn', {
+            template: `
+                <div>
+                    <h1>我是子组件</h1>
+                </div>
+            `,
+
+        })
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    messageInfo: '我是父组件的message'
+                }
+            }
+        }) 
+    </script>
+    -->
+    <div id="app">
+        <cpn1 my-message="vue"></cpn1>
+    </div>
+    <script>
+        Vue.component('cpn1', {
+            template: '<h1>hello {{myMessage}}</h1>',
+            props: ['myMessage']
+        })
+        var vm = new Vue({
+            el: '#app',
+        })
+    </script>
+    <!-- <script>
+        var cpnConstructor = Vue.extend({
+            template: `<h2>我是cpn2标题2</h2>`
+        })
+
+        // var cpn2 = {
+        //     template: `<h2>我是cpn2标题2</h2>`
+        // };
+        Vue.component('cpn1', {
+            template: `<div>
+                <h1>我是cpn1标题1</h1>
+                <cpn2></cpn2>
+            </div>`,
+            components: {
+                cpn2: cpnConstructor
+            }
+        })
+
+        var vm = new Vue({
+            el: '#app',
+        }) -->
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <title>component-01</title>
+</head>
+
+<body>
+  <!-- 只要是vue实例的el指定的范围内都可以访问说明是全局的 -->
+  <!-- <div id="app">
+      <local-counter>局部组件：{{count}}</local-counter>
+    </div> -->
+  <div id="ppa">
+    <button-counter></button-counter>
+  </div>
+  <!-- 这里不可以访问，因为component创建的组件必须在vue实例el指定的元素范围内使用才可以 -->
+  <!-- <button-counter></button-counter> -->
+  <script>
+    //   局部组件
+
+    //   全局组件
+    Vue.component("button-counter", {
+      data: () => {
+        return {
+          count: 0,
+        };
+      },
+      template:
+        '<button v-on:click="count++">You clicked me {{ count }} times.</button>',
+    });
+    //   var vm1 = new Vue({
+    // 	el: "#app",
+    // 	data(){
+    // 		return {
+    // 			count: 10
+    // 		}
+    // 	},
+    //     components: {
+    //       "local-counter": {
+    //         data: function () {
+    //           return {
+    //             count: 0,
+    //           };
+    //         },
+    //       },
+    //     },
+    //   });
+    var vm2 = new Vue({
+      el: "#ppa",
+    });
+  </script>
+</body>
+
+</html>

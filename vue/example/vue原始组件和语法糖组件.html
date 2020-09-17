@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+	<div id="app">
+		<!-- 3. 在vue实例范围内使用组件cpn -->
+		<cpn></cpn>
+		<cpn></cpn>
+	</div>
+
+	<div id="ppa">
+		<!-- 3. 在vue实例范围内使用组件cpn -->
+		<cpn></cpn>
+		<cpn></cpn>
+	</div>
+	<script>
+		// 1. 创建组件构造器
+		var cpnConstruct = Vue.extend({
+			template: `<h1>hello vue</h1>`,
+		});
+		// 2. 借助组件构造器注册组件cpn
+		// Vue.component("cpn", cpnConstruct);
+
+		var vm = new Vue({
+			el: "#ppa",
+			data: {
+				message: "hello Vue",
+			},
+		});
+		var vm2 = new Vue({
+			el: "#app",
+			data: {
+				message: "hello Vue",
+			},
+			components: {
+				'cpn': cpnConstruct,
+			}
+		});
+
+	</script>
+</body>
+
+</html>

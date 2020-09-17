@@ -10,18 +10,18 @@
     <div id="mount-point"></div>
     <script>
       var VmSon = Vue.extend({
-        template: '<p>{{firstName}}--{{lastName}}</p>',
+        template: "<p>{{firstName}}--{{lastName}}</p>",
         // 备注： 在Vue.extend中data必须是函数
-        data: function(){
+        data: function () {
           return {
-            firstName: 'xu',
-            lastName: 'xiaomei'
-          }
-        }
-      })
+            firstName: "xu",
+            lastName: "xiaomei",
+          };
+        },
+      });
 
       // 将创建的新vue实例挂载到元素上
-      new VmSon().$mount('#mount-point')
+      new VmSon().$mount("#mount-point");
     </script>
   </body>
 </html>

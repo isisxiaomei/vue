@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <!--  -->
+    <div id="app">
+        <p>我是父组件的：{{num1}}</p>
+        <cpn :props-num1="num1"></cpn>
+    </div>
+    <template id='cpnt'>
+        <div>
+            <p>{{propsNum1}}</p>
+            <input type="text" v-model="privateData.name">
+            <!-- <input type="text" :value="propsNum1" @input="inputChange(propsNum1)"> -->
+        </div>
+
+    </template>
+    <script>
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                num1: {
+                    name: 'aaa',
+                    age: 10
+
+                }
+            },
+            components: {
+                'cpn': {
+                    template: '#cpnt',
+                    data() {
+                        return {
+                            privateData: this.propsNum1
+                        }
+                    },
+                    props: ['propsNum1']
+                }
+            },
+
+        });
+    </script>
+</body>
+
+</html>

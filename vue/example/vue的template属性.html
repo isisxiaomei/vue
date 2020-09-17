@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>template</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div>{{message}}</div>
+    </div>
+    <script type="x-template" id='tem3' src="">
+        <h1>方式3：{{message}}</h1>
+    </script>
+    <script>
+      var vm = new Vue({
+          el: '#app',
+          data(){
+              return {
+                message: 'hello world'
+              }
+          },
+        template: "#tem3"
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+    <template id="son">
+        <div>
+            <button v-for="item of categories" @click="btnClick(item)">{{item.name}}</button>
+        </div>
+    </template>
+    <div id="app">
+        <cpn-button @item-click="cpnClick"></cpn-button>
+    </div>
+    <script>
+        Vue.component('cpnButton', {
+            data() {
+                return {
+                    categories: [
+                        { id: '1', name: '家电' },
+                        { id: '2', name: '科技' },
+                        { id: '3', name: '户外' },
+                    ],
+                }
+            },
+            template: '#son',
+            methods: {
+                btnClick(item) {
+                    // 发射子组件的自定义事件item-click 要短横线小写
+                    this.$emit('item-click', item)
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            methods: {
+                cpnClick(item) {
+                    console.log("---", item)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

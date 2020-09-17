@@ -8,12 +8,12 @@
     <div id="app">
       比赛得分： {{grade}}
       <!-- v-on上绑定的时click点击事件，事件函数时methods中定义的add -->
-      <button v-on:click="add">加分</button> 
+      <button v-on:click="add">加分</button>
       <!-- @是v-on的简写 -->
       <button @:click="sub">减分</button>
 
       <!-- v-on上绑定按下键盘keyup事件，当按下键盘enter键时 触发methods中定义的onEnter函数 v-model用于绑定数据源 -->
-      <input type="text" v-on:keyup.enter="onEnter" v-model="counter">
+      <input type="text" v-on:keyup.enter="onEnter" v-model="counter" />
     </div>
     <script>
       var vm = new Vue({
@@ -24,15 +24,15 @@
         },
         // method对象的函数不能定义为箭头函数，因为箭头函数的作用域不指向vm实例而是指向methods对象本身
         methods: {
-          add: function(){
-              this.grade++;
+          add: function () {
+            this.grade++;
           },
-          sub: function(){
-              this.grade--;
+          sub: function () {
+            this.grade--;
           },
-          onEnter: function(){
-              this.grade += parseInt(this.counter);
-          }
+          onEnter: function () {
+            this.grade += parseInt(this.counter);
+          },
         },
       });
     </script>

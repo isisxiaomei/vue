@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 这种比较繁琐 -->
+        {{ this.firstName + ' ' + this.lastName }}
+        <!-- 计算属性的方式比较简洁 -->
+        {{ fullName }}
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                firstName: 'Nice',
+                lastName: 'alice'
+            },
+            computed: {
+                // 可以接受回调函数，参数是vm实例
+                fullName: vm => vm.firstName.concat('-').concat(vm.lastName)
+            }
+        })
+    </script>
+    <!-- 308 --308  -->
+    <!-- <div id="app">{{ totalPrice }} -- {{totalPriceTwo}}</div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                categories: [
+                    { id: 1, name: '计算机网络', price: 100 },
+                    { id: 2, name: '操作系统', price: 98 },
+                    { id: 3, name: '深入理解计算机系统', price: 110 },
+                ]
+            },
+            computed: {
+                totalPrice() {
+                    return this.categories.reduce((a, b) => {
+                        a.price += b.price
+                        return a;
+                    }, { price: 0 }).price
+                },
+                totalPriceTwo() {
+                    return this.categories.map(item => item.price).reduce((a, b) => a + b);
+                },
+            },
+
+
+        });
+    </script> -->
+</body>
+
+</html>

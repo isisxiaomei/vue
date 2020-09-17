@@ -19,7 +19,7 @@
     <meta charset="UTF-8" />
     <title>vue是mvvm的代表框架，通过简单的程序理解下mvvm</title>
 		// 需要引入 vue的包
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
   </head>
   <body>
     <!-- View层 -->

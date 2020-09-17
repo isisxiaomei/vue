@@ -17,7 +17,9 @@
       <div :class="classComputed">3.计算属性绑定class属性值</div>
       <div :class="classObjectComputed">4.计算属性绑定class中的对象</div>
       <div :class="['classA', 'classB']">5.绑定静态数组</div>
-      <div :class="[isRed ? 'classA' : '', isFont ? 'classB' : '']">6.三目表达式动态控制样式</div>
+      <div :class="[isRed ? 'classA' : '', isFont ? 'classB' : '']">
+        6.三目表达式动态控制样式
+      </div>
     </div>
 
     <style>
@@ -45,9 +47,9 @@
           },
           classObjectComputed: (vm) => {
             return {
-                classA: vm.isRed,
-                classB: vm.isFont
-            }
+              classA: vm.isRed,
+              classB: vm.isFont,
+            };
           },
         },
       });

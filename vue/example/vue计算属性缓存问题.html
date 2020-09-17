@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>{{this.firstName + ' ' + this.lastName}}</h1>
+        <div>
+            methods方法调用次数：3次
+            <h1>{{getFullName()}}</h1>
+            <h1>{{getFullName()}}</h1>
+            <h1>{{getFullName()}}</h1>
+        </div>
+        <div>
+            computed属性调用次数：1次
+            <h1>{{fullName}}</h1>
+            <h1>{{fullName}}</h1>
+            <h1>{{fullName}}</h1>
+        </div>
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                firstName: 'Nice',
+                lastName: 'alice',
+                flag: '111',
+            },
+            computed: {
+                fullName: vm => {
+                    console.log('fullName');
+                    return vm.firstName.concat(' ').concat(vm.lastName)
+                }
+            },
+            methods: {
+                getFullName() {
+                    console.log('getFullName');
+                    return this.firstName.concat(' ').concat(this.lastName)
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
