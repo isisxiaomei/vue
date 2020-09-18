@@ -280,6 +280,7 @@ new Vue({
     <div id="app">
         <!-- myCpn自定义组件写成my-cpn  cpnList是子组件props中声明的属性写成cpn-list，接受父组件传递的属性-->
       	<!-- v-bind:cpn-list="list" 简写 :cpn-list="list" -->
+      	<!-- cpn-list是子组件props中定义的属性cpnList，用于接收父组件传递来的list -->
         <my-cpn :cpn-list="list" :cpn-pers-info="persInfo"></my-cpn>
     </div>
     <script>
@@ -313,8 +314,6 @@ new Vue({
 ### 5.2 子组件向父组件传递
 
 - 子组件向父组件传递数据是通过自定义事件
-
-
 
 ```html
 <body>
@@ -373,7 +372,13 @@ new Vue({
 
 ### 6.1 基本使用
 
+- ***作用***：props 可以是数组或对象，用于接收来自父组件的数据。props 可以是简单的数组，或者使用对象作为替代，对象允许配置高级选项，如类型检测、自定义验证和设置默认值
+
+```
+
 ### 6.2 
+
+
 
 
 

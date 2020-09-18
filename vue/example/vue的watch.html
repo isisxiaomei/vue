@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input v-model="blog" />
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                count: 10,
+                blog: {
+                    title: 'my-blog',
+                    personals: {
+                        age: 20
+                    }
+                }
+            },
+            watch: {
+                blog: {
+                    handler: function (newVal, oldVal) {
+                        console.di(newVal, oldVal);
+                    },
+                    deep: true
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>
