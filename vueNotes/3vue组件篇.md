@@ -366,29 +366,108 @@ new Vue({
 </body>
 ```
 
+## 6. 父子组件的访问
 
+### 6.1 父访问子
+- ***两种访问方式***：通过$children或者$refs
+```js
+1. this.$children：是一个包含所有子组件对象的数组
+2. this.$refs：默认是`{}`，当在子组件上绑定ref属性时，this.$refs的结构就变成
+`{ 绑定的ref属性: 对应的子组件 }`
+```
+```html
+<!-- this.$children示例 -->
+<body>
+  <div id="app">
+      <cpn></cpn>
+      <button @click="btn">按钮</button>
+  </div>
+  <template id="cpn">
+      <div>
+          <h1>{{message}}</h1>
+      </div>
+  </template>
+  <script>
+      var vm = new Vue({
+          el: "#app",
+          data: {
+              message: "我是父组件app",
+          },
+          methods: {
+              btn() {
+                  console.log(this.$children[0].message)
+                  this.$children[0].show();
+              }
+          },
+          components: {
+              cpn: {
+                  template: '#cpn',
+                  data() {
+                      return {
+                          message: "我是子组件cpn",
+                      }
+                  },
+                  methods: {
+                      show() {
+                          console.log(this.message);
+                      }
+                  }
 
-## 6. props
-
-### 6.1 基本使用
-
-- ***作用***：props 可以是数组或对象，用于接收来自父组件的数据。props 可以是简单的数组，或者使用对象作为替代，对象允许配置高级选项，如类型检测、自定义验证和设置默认值
-
+              }
+          }
+      });
+  </script>
+</body>
 ```
 
-### 6.2 
+```html
+<!-- this.$refs示例： -->
+<body>
+    <div id="app">
+        <cpn ref="cpnA"></cpn>
+        <cpn ref="cpnB"></cpn>
+        <button @click="showSon">按钮</button>
+    </div>
+    <template id="cpn">
+        <div>
+            <h1>{{message}}</h1>
+        </div>
+    </template>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data() {
+                return {}
+            },
+            methods: {
+                showSon() {
+                    console.log(this.$refs)
+                    console.log(this.$refs.cpnA)
+                    console.log(this.$refs.cpnB)
+                }
+            },
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            message: "我是子组件cpn",
+                        }
+                    },
+                    methods: {
+                        show() {
+                            console.log(this.message);
+                        }
+                    }
 
+                }
+            }
+        });
+    </script>
+</body>
+```
+### 6.2 子访问父
+- ***this.$parent***：可以访问到父组件，但是不提倡这样做，这样会破坏子组件的复用性，比如在子组件中修改父组件A的name属性，但是其他B的组件引用这个子组件，B组件中并没有name属性；会导致没有解耦
+- ***this.$root***： 会直接访问到根实例
 
-
-
-
-
-
-## 7. 父子组件的访问
-
-### 7.1 父访问子
-
-
-
-### 7.2 子访问父
 

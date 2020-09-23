@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <cpn></cpn>
+        <button @click="btn">按钮</button>
+    </div>
+    <template id="cpn">
+        <div>
+            <h1>{{message}}</h1>
+        </div>
+    </template>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                message: "我是父组件app",
+            },
+            methods: {
+                btn() {
+                    console.log(this.$children[0].message)
+                    this.$children[0].show();
+                }
+            },
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            message: "我是子组件cpn",
+                        }
+                    },
+                    methods: {
+                        show() {
+                            console.log(this.message);
+                        }
+                    }
+
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
