@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn :cpnper="persons"></cpn>
+    </div>
+
+    <template id="cpn">
+        <div>{{ getProps() }}</div>
+    </template>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    props: ["cpnPersons"],
+                    methods: {
+                        getProps() {
+                            // console.log(this.$props);
+                            // console.log(this.$props.cpnPersons);
+                        }
+                    }
+                }
+            },
+            data() {
+                return {
+                    persons: ['东方不败', '雪千寻', '任我行', '令狐冲', '鸠摩智', '独孤求败']
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

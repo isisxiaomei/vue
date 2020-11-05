@@ -122,7 +122,26 @@
 
 ## 5. v-on
 
-- ***v-on***：绑定dom事件
+> 参考：https://segmentfault.com/q/1010000013088053
+
+- ***v-on作用***：绑定dom事件（除了直接绑定methods函数外，v-on也支持内联JavaScript语句，但仅限一个语句）
+- ***缩写***：`v-on:click`可以缩写成`@click`
+- ***预期***：`Function | Inline Statement | Object`
+- ***修饰符***：
+
+  - `.stop` - 调用 `event.stopPropagation()`。
+  - `.prevent` - 调用 `event.preventDefault()`。
+  - `.capture` - 添加事件侦听器时使用 capture 模式。
+  - `.self` - 只当事件是从侦听器绑定的元素本身触发时才触发回调。
+  - `.{keyCode | keyAlias}` - 只当事件是从特定键触发时才触发回调。
+  - `.native` - 监听组件根元素的原生事件。
+  - `.once` - 只触发一次回调。
+  - `.left` - (2.2.0) 只当点击鼠标左键时触发。
+  - `.right` - (2.2.0) 只当点击鼠标右键时触发。
+  - `.middle` - (2.2.0) 只当点击鼠标中键时触发。
+  - `.passive` - (2.3.0) 以 `{ passive: true }` 模式添加侦听器
+
+## 5.1 基本用法
 
 ```html
   <body>
@@ -159,9 +178,116 @@
   </body>
 ```
 
+
+
+## 5.2 预期类型
+
+### 5.2.1 预期类型之单个方法名
+
+比如`v-on:click="add"`接受单个方法名add，单个方法名用法的优点是add方法中可以接受默认传统原生事件的`event`事件对象；单个方法名的缺点是不能自定义传参。
+
+```html
+<body>
+    <div id="app">
+        <button v-on:click="add">加分</button>
+        <button v-on:click="sub">减分</button>
+        <p>{{counter}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                counter: 1,
+            },
+            methods: {
+                // 默认可以接受原生dom事件的event对象
+                add: function (event) {
+                    this.counter++;
+                    console.log(event);
+                },
+                sub: function () {
+                    this.counter--;
+                }
+            },
+        });
+    </script>
+</body>
+```
+
+### 5.2.2 预期类型之内联语句
+
+传统的单个方法名不能满足自定义传参，所以我们可以采用内联语句的形式满足用户自定义传参，但是内联自定义传参的缺点是默认不传递event事件对象，如果需要必须在绑定时显示手动传递
+
+```html
+<!-- 内联js语句进行函数自定义传参 -->
+<body>
+    <div id="app">
+        <!-- 手动传递$event，add函数再接受下。其实发现内联也可以直接不传递$event,add方法也可以接受了 -->
+        <button v-on:click="add('hello', $event)">加分</button>
+        <p>{{counter}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                counter: 1,
+            },
+            methods: {
+                add: function (param, event) {
+                    this.counter++;
+                    console.log(param);
+                    console.log(event.target.tagName);
+                }
+            },
+        });
+    </script>
+</body>
+```
+
+
+
+```html
+<!-- 绑定内联js语句 -->
+<div id="example-1">
+  <button v-on:click="counter += 1">Add 1</button>
+  <p>The button above has been clicked {{ counter }} times.</p>
+</div>
+
+var example1 = new Vue({
+  el: '#example-1',
+  data: {
+    counter: 0
+  }
+})
+```
+
+
+
+```js
+// 内联js语句绑定三目运算符
+
+// 错误写法：
+@click="dialogStatus=='create'?createData:updateData"						
+
+// 正确写法：
+@click="dialogStatus=='create' ? createData() : updateData()"		
+
+// 解析：vue中有正则来判断你clicl后面写的是什么，如果是函数，不作处理，但如果不是函数，他会封装一下，比如dialogStatus=='create'?createData:updateData会封装为function($event){dialogStatus=='create'?createData:updateData}，这个函数运行后，里面的createData:updateData是不会运行的
+```
+
+## 5.3 绑定多事件
+
+同一元素上也可以通过v-on绑定多个相同事件函数，执行顺序为顺序执行
+
+```js
+<div v-on:click="sayFrom('first')" v-on:click ="sayFrom('second)"> 
+```
+
 ## 6. v-model //todo 待完善
 
 - ***v-model***：在表单控件或者组件上创建双向绑定数据源；（**注意 : 只能运用到表单元素中**）
+
+- ***注意v-bind和v-model的区别，v-bind绑定动态变量，但绑定的属性没有；响应式v-model绑定的数据具有响应式***
 
   - 随表单控件类型不同而不同，为不同的输入元素使用不同的 property 并抛出不同的事件
 
@@ -248,8 +374,6 @@ data: {
           fontSize: '13px'
         }
   }
-
-
 ```
 
 
@@ -266,33 +390,31 @@ data: {
   <p :class="{thin: true, italic: true, active: false}"></p>
   ```
 
-  
-
   - 方式3：计算属性形式
-  - 方式4：数组写法
-
+- 方式4：数组写法
+  
   ```html
-  // 直接传递一个数组, 数组里面的类名要写字符串, 注意:这里的class需要使用v-bind做数据绑定
+// 直接传递一个数组, 数组里面的类名要写字符串, 注意:这里的class需要使用v-bind做数据绑定
   使用方式：
   <p :class="['thin', 'italic']"></p>
   ```
-
+  
   - 方式5：数组中嵌套对象
 
   ```html
-  // 数组中推荐使用这种方式
+// 数组中推荐使用这种方式
   使用方式：
   <p :class="['thin', 'italic',{'active':flag}]"></p> // 这里的flag在data中定义, 是一个布尔值
   ```
-
+  
   - 方式6：数组中使用三目运算符
 
   ```html
-  // data中定义一个布尔值类型的flag,在数组中用三元表示来显示这个flag
+// data中定义一个布尔值类型的flag,在数组中用三元表示来显示这个flag
   使用方式：
   <p :class="['thin', 'italic', flag ? 'active':'noactive']"></p>
   ```
-
+  
   
 
 ```html
@@ -372,9 +494,39 @@ data: {
 </div>
 ```
 
+## 9 v-slot
+
+- ***v-slot***：用于绑定子组件模板中的指定插槽(slot组件的name属性)。这样父组件传递给子组件的标签就会绑定到特定的插槽上展示
+- `v-slot`只能添加在<template></template>上。
+
+- `v-slot`的缩写形式为 `#` (`v-slot:center`  等价于 `#center` )
+
+```html
+<!-- 示例1： -->
+
+<div id="app">
+  <cpn> 
+    	// 使用template将要传递给子组件cpn的标签button包裹起来，再使用v-slot绑定子组件cpn中预留的指定插槽(通过v-slot绑定slot标签的name属性); 后面父组件的button就可以渲染到cpn的插槽名为center的插槽上
+      <template v-slot:center>
+          <button>btn</button>
+      </template>
+  </cpn>
+</div>
 
 
-## 9. Vue.directive自定义指令
+// 子组件cpn
+<template id="cpn">
+  <div>
+    <slot name="left"> <span>左边</span> </slot>
+    <slot name="center"> <span>中间</span> </slot>
+    <slot name="right"> <span>右边</span> </slot>
+	</div>
+</template>
+```
+
+
+
+## 10. Vue.directive自定义指令
 
 
 

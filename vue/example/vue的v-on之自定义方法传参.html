@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 手动传递$event，add函数再接受下。其实发现内联也可以直接不传递$event,add方法也可以接受了 -->
+        <button v-on:click="add('hello', $event)">加分</button>
+        <p>{{counter}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                counter: 1,
+            },
+            methods: {
+                add: function (param, event) {
+                    this.counter++;
+                    console.log(param);
+                    console.log(event.target.tagName);
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

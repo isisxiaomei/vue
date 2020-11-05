@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽的基本使用</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn>我是cpn</cpn>
+    </div>
+
+    <template id="cpn">
+        <div>
+            <slot></slot>
+            <h1>{{getSlots()}}</h1>
+        </div>
+    </template>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            persons: ['东方不败', '雪千寻', '任我行', '令狐冲', '鸠摩智', '独孤求败']
+                        }
+                    },
+                    methods: {
+                        getSlots() {
+                            console.log("slots---", this.$slots.default)
+                        }
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

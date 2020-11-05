@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+
+    <div id="example"></div>
+    <script>
+        var vm = new Vue({
+            el: '#example',
+            data: {
+                message: '111'
+            },
+            beforeMount() {
+                console.log("beforeMount");
+            },
+            mounted() {
+                console.log("mounted");
+            },
+            beforeUpdate() {
+                console.log("beforeUpdate");
+            },
+            updated() {
+                console.log("updated");
+            },
+            render: function (createElement, context) {
+                console.log("render");
+                return createElement(
+                    'div',
+                    {},
+                    [this.message]
+                );
+
+            }
+        })
+        setTimeout(() => {
+            console.log("setTimeout");
+        }, 0)
+        Promise.resolve(1).then(value => {
+            console.log("Promise1", vm.$el.textContent);
+        })
+
+        vm.message = '222' // 更改数据
+
+        Promise.resolve(2).then(value => {
+            console.log("Promise2", vm.$el.textContent);
+        })
+
+        Vue.nextTick(() => {
+            vm.message = '555'
+            Vue.nextTick(() => {
+                console.log("inNextTick===", vm.$el.textContent);
+            })
+            console.log("outNextTick===", vm.$el.textContent);
+        })
+        vm.message = '333' // 更改数据
+
+        Promise.resolve(3).then(value => {
+            console.log("Promise3", vm.$el.textContent);
+        })
+
+        console.log(vm.$el.textContent);
+
+        vm.message = '444'
+
+    </script>
+</body>
+
+</html>

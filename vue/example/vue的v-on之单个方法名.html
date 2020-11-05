@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="add">加分</button>
+        <button v-on:click="sub">减分</button>
+        <p>{{counter}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                counter: 1,
+            },
+            methods: {
+                add: function (event) {
+                    this.counter++;
+                    console.log(event);
+                },
+                sub: function () {
+                    this.counter--;
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

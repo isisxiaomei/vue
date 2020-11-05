@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{ items }}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            created() {
+                this.getData()
+            },
+            methods: {
+                myItermSort() {
+                    // this.items.sort((a, b) => a - b)
+                    // return this.items
+                    this.items.push(4);
+                    return this.items;
+                },
+                getData() {
+                    axios.get('http://123.207.32.32:8000/home/multidata')
+                        .then(res => {
+                            this.items = res.data
+                            console.log(this.items);
+                        })
+                }
+            },
+            data() {
+                return {
+                    items: {}
+
+                }
+            },
+        });
+
+
+
+                            // students: [
+                    //     { name: "a", age: 10 },
+                    //     { name: "b", age: 5 },
+                    //     { name: "c", age: 30 },
+                    //     { name: "d", age: 2 },
+                    // ],
+                    // person: {
+                    //     name: "xiaomei",
+                    //     age: 18,
+                    //     habby: "game",
+                    // },
+    </script>
+</body>
+
+</html>

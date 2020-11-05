@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <!-- <div id="app">
+        <p ref="pref" attr="ppp">我是p元素</p>
+        <div>
+            {{ getElement() }}
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            methods: {
+                getElement() {
+                    // this.$refs.pref指向p元素
+                    // vm.$refs.pref.getAttribute('attr')可以获取到p元素上的attr属性值
+                    return this.$refs.pref
+                }
+            }
+
+        })
+    </script> -->
+
+    <div id="app">
+        <cpn ref="cpnRef"></cpn>
+        <button @click="getcpn">btn</button>
+        <p>{{ msg }}</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    msg: ''
+                }
+            },
+            components: {
+                cpn: {
+                    template: '<div>我是cpn组件</div>',
+                    data() {
+                        return {
+                            cpnMsg: "我是cpn组件的cpnMsg"
+                        }
+                    }
+                }
+            },
+            methods: {
+                getcpn() {
+                    // this.$refs.cpnRef指向cpn组件实例；可以简单调用cpn组件的属性或者方法
+                    // this.$refs.cpnRef.cpnMsg 获取到cpn子组件的属性值
+                    this.msg = this.$refs.cpnRef.cpnMsg
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>

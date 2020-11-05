@@ -8,8 +8,6 @@
 3. 使用npm初始化项目	`npm init` (此时会暴露出package.json)
 ```
 
-
-
 ## 1. helloworld
 
 ```html

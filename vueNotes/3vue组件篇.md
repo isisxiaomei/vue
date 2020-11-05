@@ -68,6 +68,8 @@ new Vue({
 })
 ```
 
+***生命周期函数补充***：activated和deactivated函数，这两个生命周期函数是在组件实例被保持了状态使用了keep-alive时，才有效的。当被kepp-alive包裹渲染时，切换路由组件时，档切换到被包裹的组件时，被包裹的组件则处处于活跃状态调用activated，切换到其他组件时，该包裹的组件则处于活跃状态调用deactivated函数。
+
 ## 3. 全局组件和局部组件
 
 ### 3.1 全局组件
@@ -248,7 +250,7 @@ new Vue({
 
 ### 5.1 父组件向子组件传递
 
-- 父组件向子组件传递方式：通过props属性
+- 父组件向子组件传递方式：通过`props`属性 和 `vm.$attrs`属性
 - 命名总结：HTML 特性是不区分大小写的。所以，当使用的不是字符串模板时，camelCase (驼峰式命名) 的 prop 需要转换为相对应的 `xxx-ccc (短横线分隔式命名)`；在js中使用驼峰式，html中使用短横线
 
 ```html
@@ -470,4 +472,60 @@ new Vue({
 - ***this.$parent***：可以访问到父组件，但是不提倡这样做，这样会破坏子组件的复用性，比如在子组件中修改父组件A的name属性，但是其他B的组件引用这个子组件，B组件中并没有name属性；会导致没有解耦
 - ***this.$root***： 会直接访问到根实例
 
+# 7 动态组件 
 
+- ***动态组件定义：通过使用vue内置的` <component> `元素，并对其使用` is `特性进行动态绑定，你可以在同一个挂载点动态切换多个组件
+- 使用vue内置的` <component> `元素 + 绑定特殊属性`is`进而完成动态组件
+
+```html
+<!-- 基本使用 -->
+<!-- 解析：当用户点击home按钮则在下方的component位置渲染出home组件，点击posts按钮会在下方渲染出posts组件 -->
+<body>
+    <div id='app'>
+        <div>
+            <!-- 注意 currentTab = tab是内联js语句，执行后currentTab发生变化触发currentTabComponent -->
+            <button v-for="tab in tabs" @click="currentTab = tab">
+                {{ tab }}
+            </button>
+            <!-- component为vue的内置组件和特殊属性is搭配起来表示
+                根据currentTabComponent的变化进而渲染成不同的组件，被渲染出的组件会完全替换内置的component组件
+            -->
+            <component :is="currentTabComponent"></component>
+        </div>
+    </div>
+
+    <script>
+        Vue.component("home", {
+            template: "<div>Home component</div>"
+        });
+        Vue.component("posts", {
+            template: "<div>Posts component</div>"
+        });
+        new Vue({
+            el: "#app",
+            data: {
+                currentTab: "Home",
+                tabs: ["Home", "Posts"]
+            },
+            computed: {
+                currentTabComponent: function () {
+                    return this.currentTab.toLowerCase();
+                }
+            }
+        });
+    </script>
+</body>
+```
+
+当在这些组件之间切换的时候，你有时会想保持之前这些组件的状态，以避免反复重渲染导致的性能问题。为了解决这个问题，我们可以用一个 `<keep-alive>` 元素将其动态组件包裹起来。
+
+```html
+<!-- 失活的组件将会被缓存，下次渲染就不会重新创建组件实例，并且组件之前的状态也会被缓存记录！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+# 8 异步组件
+
+https://segmentfault.com/a/1190000021193514
