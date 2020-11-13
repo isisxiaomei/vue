@@ -328,3 +328,65 @@ let bar = await getBar();
 let [foo, bar] = await Promise.all([getFoo(), getBar()]);
 ```
 
+
+
+# async的使用场景
+
+示例1使用promise请求后端接口，我们必须在then里面才可以拿到数据，然后进行处理；也就是说数据初始化依赖promise请求返回的结果；再通俗讲就是我们需要的做的事情依赖某个操作的结果时，可以将依赖的操作写成await，这样就可以了。
+
+具体可以对比下示例1和示例2，体会下
+
+```js
+// 示例1：
+getLessonList() {
+  axios.get('/xxx', {
+    params: {
+      courseId: yyy
+    }
+  }).then(res => {
+    if (res && res.status && res.data) {
+      this.lessonLists = res.data.nativeLessonListRes
+      this.lessonLists.forEach(item => {
+        this.$set(item, 'showTimeLine', false)
+        this.$set(item, 'defaultArrow', this.arrow.backArrow)
+        this.$set(item, 'showGoldTask', true)
+      })
+      this.currentLessonId = res.data.currentLessonId
+      this.broadcastItem = this.getBroadcastLesson()
+      this.$nextTick(() => {
+        this.initScroll()
+        if (this.broadcastFlag) {
+          this.viewTimeLineTask(this.broadcastItem)
+          this.broadcastFlag = false
+        }
+      })
+    }
+  }).catch(error => {
+    console.log('getLessonListError', error)
+  })
+}
+
+// 示例2：
+async getCourseTask(item, courseId, lessonId) {
+  try {
+    let loadingInstance = this.$loading()
+    let res = await axios.get('/xxx', {
+      params: {
+        previewRank: true,
+      }
+    })
+    this.$loading.stop(loadingInstance)
+    if (res && res.status && res.data) {
+      item.rankUrl = res.data.rankUrl
+      this.$set(item, 'showGoldTask', false)
+      this.$nextTick(() => {
+        let lessonIndex = this.getLessonIndex(item)
+        this.getTimeLineHeight(lessonIndex)
+      })
+    }
+  } catch (error) {
+    console.log('getCourseTaskError', error)
+  }
+}
+
+```

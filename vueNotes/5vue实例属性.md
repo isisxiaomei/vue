@@ -358,6 +358,8 @@ vm.$attrs是一个对象，用于接受父组件传递的所有的属性。一�
 
 $attrs营运而生，`$attrs` 可以很方便的做到属性透传，使用起来也比较简单，避免了中间组件多写 `props` 的痛苦
 
+
+
 ```html
 // 示例1：使用props进行组件通信
 <div id="app">
@@ -414,7 +416,37 @@ $attrs营运而生，`$attrs` 可以很方便的做到属性透传，使用起�
 参考：https://juejin.im/post/6844903784989081607
 ```
 
+### 3. $attrs注意点
 
+$attrs传递过程中不包含已经被props接收的属性。
+
+举例说明：比如A组件透过B组件传递两个参数m和n给组件C，如果在传递的过程中B组件设置了props接收了m属性，那么$attrs中的m属性就会被剔除，C组件就无法收到m属性，只能获取到n属性了。
+
+```html
+<!-- 示例1：注意点 -->
+<!-- B.vue -->
+<template>
+  <div>
+    我是B组件{{ listA }}-- {{ msgA }}
+    <C v-bind="$attrs" :msg-b="msgB"></C>
+  </div>
+</template>
+<script>
+import C from "./C";
+export default {
+  data () {
+    return {
+      msgB: 'hello msgB'
+    }
+  },
+  props: ['msgA', 'listA'],
+  components: {
+    C
+  }
+}
+</script>
+<!-- 示例1总结：A透传给C的属性在$attrs里面，在透传的过程中B从$attrs中取走了A透传的listA和msgA，那么这两个listA和msgA属性就会从 $attrs中被剔除，所以C组件就无法从$attrs获取到A透传的属性了-->
+```
 
 
 

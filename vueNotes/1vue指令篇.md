@@ -134,7 +134,8 @@
   - `.capture` - 添加事件侦听器时使用 capture 模式。
   - `.self` - 只当事件是从侦听器绑定的元素本身触发时才触发回调。
   - `.{keyCode | keyAlias}` - 只当事件是从特定键触发时才触发回调。
-  - `.native` - 监听组件根元素的原生事件。
+  - `.native` - 监听组件根元素的原生事件；因为组件不能使用原生html标签的事件等。
+    - <cpn @click="backClick"/>	需要写成=>    <cpn @click.native="backClick"/>
   - `.once` - 只触发一次回调。
   - `.left` - (2.2.0) 只当点击鼠标左键时触发。
   - `.right` - (2.2.0) 只当点击鼠标右键时触发。

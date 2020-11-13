@@ -27,75 +27,11 @@
 <p>xu--xiaomei</p>
 ```
 
-## 2. Vue.set()
+## 2. Vue.use()
 
-- ***参数***：`Vue.set(Object|Array, propertyName/index, value)`
-  - `{Object | Array} target`
-  - `{string | number} propertyName/index`
-  - `{any} value`
-- **返回值**：设置的值。
 
-- ***作用***：用于向响应式对象上添加或者修改 property，并确保这个新 property 同样是响应式的，且触发视图更新。注意对象不能是 Vue 实例或者 Vue 实例的根数据对象。
 
-```html
-<!-- 示例1：通过数组下标修改数组，是不会触发视图渲染的。但是内存中vm.arrs[1]的值已经被修改，只是没有触发视图渲染-->
-<body>
-  <div id="app">
-    <ul>
-      <li v-for="item of arrs">{{item}}</li>
-    </ul>
-    <button onclick="add()">add</button>
-  </div>
-  <script>
-    add = () => {
-      vm.arrs[1] = "ddd";		// 备注：这里通过数组下标修改数组，是不会触发视图渲染的
-    };
-    var vm = new Vue({
-      el: "#app",
-      data() {
-        return {
-          arrs: ["aa", "bb", "cc"],
-        };
-      },
-    });
-  </script>
-</body>
-
-<!-- 示例2：使用Vue.set强制响应式属性触发视图渲染 -->
-add = () => {
-    Vue.set(vm.arrs, 1, 'ee');
-};
-```
-
-```html
-<!-- 示例3：可以使用在data中增加一个变量的方式，修改变量进而触发视图渲染将data中的所有重新渲染一次，这时通过数组下标的形式修改的数组也会被渲染 -->
-<body>
-  <div id="app">
-    <ul>
-      <li v-for="item of arrs">{{item}}</li>
-    </ul>
-    <p>{{count}}</p>	<!-- 备注这里必须渲染count才可以触发vm的整个data渲染包括数组的渲染，如果只是改变count，但是不渲染count那么是不会触发响应式的试图更新的 -->
-    <button onclick="add()">add</button>
-  </div>
-  <script>
-    add = () => {
-      vm.arrs[1] = 'gg';
-      outData.count++;
-    };
-    var outData = {
-      count: 1,
-      arrs: ['aa', 'bb', 'cc']
-    }
-    var vm = new Vue({
-      el: "#app",
-      data: outData,
-
-    });
-  </script>
-</body>
-```
-
-## 3. Vue.component
+## 3. Vue.component()
 
 ### 3.1 基本介绍
 
@@ -146,6 +82,7 @@ var MyComponent = Vue.component('my-component')
 解释：如上述示例1，如果此时要求3个计数器组件 button-counter，
 -->
 ```
+
 ![](../vueNotes/imag/componentGlobal.png)
 
 ### 3.2 组件创建的方式
@@ -225,3 +162,96 @@ var vm = new Vue({
 
 
 
+## 4. Vue.set()
+
+- ***参数***：`Vue.set(Object|Array, propertyName/index, value)`
+  - `{Object | Array} target`
+  - `{string | number} propertyName/index`
+  - `{any} value`
+- **返回值**：设置的值。
+
+- ***作用***：用于向响应式对象上添加或者修改 property，并确保这个新 property 同样是响应式的，且触发视图更新。注意对象不能是 Vue 实例或者 Vue 实例的根数据对象。
+
+```html
+<!-- 示例1：通过数组下标修改数组，是不会触发视图渲染的。但是内存中vm.arrs[1]的值已经被修改，只是没有触发视图渲染-->
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="item of arrs">{{item}}</li>
+    </ul>
+    <button onclick="add()">add</button>
+  </div>
+  <script>
+    add = () => {
+      vm.arrs[1] = "ddd";		// 备注：这里通过数组下标修改数组，是不会触发视图渲染的
+    };
+    var vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          arrs: ["aa", "bb", "cc"],
+        };
+      },
+    });
+  </script>
+</body>
+
+<!-- 示例2：使用Vue.set强制响应式属性触发视图渲染 -->
+add = () => {
+    Vue.set(vm.arrs, 1, 'ee');
+};
+```
+
+```html
+<!-- 示例3：可以使用在data中增加一个变量的方式，修改变量进而触发视图渲染将data中的所有重新渲染一次，这时通过数组下标的形式修改的数组也会被渲染 -->
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="item of arrs">{{item}}</li>
+    </ul>
+    <p>{{count}}</p>	<!-- 备注这里必须渲染count才可以触发vm的整个data渲染包括数组的渲染，如果只是改变count，但是不渲染count那么是不会触发响应式的试图更新的 -->
+    <button onclick="add()">add</button>
+  </div>
+  <script>
+    add = () => {
+      vm.arrs[1] = 'gg';
+      outData.count++;
+    };
+    var outData = {
+      count: 1,
+      arrs: ['aa', 'bb', 'cc']
+    }
+    var vm = new Vue({
+      el: "#app",
+      data: outData,
+
+    });
+  </script>
+</body>
+```
+
+## 5. Vue.delete()
+
+一般我们删除对象某个属性，使用`delete obj.xx`，这种删除操作不会触发响应式，但是如果我们需要删除操作是响应式的，可以使用
+```js
+Vue.delete(obj, 'key')
+或者
+this.$delete(obj, 'key')
+```
+
+
+
+
+
+## 6. Vue.nextTick()
+
+
+
+
+
+## 7. Vue.filter()
+
+
+
+## 8. Vue.directive()
+- [Vue.directive](https://cn.vuejs.org/v2/api/#Vue-directive)

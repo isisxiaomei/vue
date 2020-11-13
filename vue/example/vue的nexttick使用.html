@@ -13,7 +13,7 @@
     <div id="example"></div>
     <script>
         var vm = new Vue({
-            el: '#example',
+            // el: '#example',
             data: {
                 message: '111'
             },
@@ -39,29 +39,45 @@
 
             }
         })
+
         setTimeout(() => {
             console.log("setTimeout");
         }, 0)
-        Promise.resolve(1).then(value => {
+        Promise.resolve().then(value => {
             console.log("Promise1", vm.$el.textContent);
+            Vue.nextTick(() => {
+                vm.message = '555'
+                Vue.nextTick(() => {
+                    console.log("promise1==InNextTick===", vm.$el.textContent);
+                })
+                console.log("promise1==nextTick===", vm.$el.textContent);
+            })
+        })
+
+        Vue.nextTick(() => {
+            console.log("topnextTick===", vm.$el.textContent);
         })
 
         vm.message = '222' // 更改数据
 
-        Promise.resolve(2).then(value => {
+        Promise.resolve().then(value => {
             console.log("Promise2", vm.$el.textContent);
+            Vue.nextTick(() => {
+                console.log("promise2==nextTick===", vm.$el.textContent);
+            })
         })
 
         Vue.nextTick(() => {
-            vm.message = '555'
+            // vm.message = '555'
             Vue.nextTick(() => {
-                console.log("inNextTick===", vm.$el.textContent);
+                console.log("bottomInnerNextTick===", vm.$el.textContent);
             })
-            console.log("outNextTick===", vm.$el.textContent);
+            console.log("bottomnextTick===", vm.$el.textContent);
         })
+
         vm.message = '333' // 更改数据
 
-        Promise.resolve(3).then(value => {
+        Promise.resolve().then(value => {
             console.log("Promise3", vm.$el.textContent);
         })
 

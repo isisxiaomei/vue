@@ -1,4 +1,5 @@
 # 插件理论简介
+
 - 插件通常用来为 Vue 添加全局功能
 - Vue.use必须在new Vue之前使用
 - Vue.use(MyPlugin, { someOption: true })；意思是创建一个名字叫MyPlugin的插件，然后默认调用MyPlugin插件的install方法，相当于MyPlugin.install(Vue，{ someOption: true })；install的第一个参数默认是全局的Vue实例，第二个参数是传递的自定义参数。后面可以通过在MyPlugin.install的方法中，给Vue实例定义全局的公共属性。
@@ -266,3 +267,127 @@ new Vue({
 }).$mount("#app");
 
 ```
+
+# vue插件之toast封装2
+
+```js
+// main.js
+import Vue from "vue";
+import AppToast from "./AppToast.vue";
+import { useToastPlugin } from "./common/useToastPlugin.js";
+
+Vue.use(useToastPlugin)
+new Vue({
+  render () {
+    return (
+      <AppToast />
+    )
+  }
+}).$mount("#app");
+```
+
+
+
+```html
+<!-- AppToast.vue -->
+<template>
+  <div id="appToast"></div>
+</template>
+<script>
+export default {
+  mounted () {
+    // 这里直接将toast组件作为对象实例使用，可以直接调toast组件的方法，具体怎样使得toast组件作为一个对象实例使用，参考useToastPlugin.js
+    this.$toast.show('hello')
+  }
+
+}
+</script>
+```
+
+
+
+```js
+// useToastPlugin.js
+import Toast from "../components/Toast.vue";
+export const useToastPlugin = {
+    install: function (Vue) {
+        // 1.使用Toast组件生成组件构造器
+        const ToastConstructor = Vue.extend(Toast)
+        // 2.使用组件构造器创建组件对象
+        const toast = new ToastConstructor();
+        // 3. 将组件对象手动挂载到某个html元素上
+        toast.$mount(document.createElement('div'))
+        // 4. 将toast组件对象的dom节点添加到body中
+        document.body.appendChild(toast.$el)
+        // 5. 将toast组件对象挂载到vue原型
+        Vue.prototype.$toast = toast
+    }
+}
+```
+
+
+
+```html
+<!-- Toast.vue -->
+<style scope>
+.box {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  text-align: center;
+  padding: 10px;
+  font-size: 32px;
+  color: white;
+}
+</style>
+<script>
+export default {
+  data () {
+    return {
+      message: '',
+      isShow: false
+    }
+  },
+  methods: {
+    show (message = 'hellovue', during = 2000) {
+      this.message = message
+      this.isShow = true
+      setTimeout(() => {
+        this.isShow = false
+        this.message = ''
+      }, during)
+    },
+  },
+  render () {
+    return (
+      <div class="container">
+        <div class="box">
+          {this.message}
+        </div>
+      </div>
+    )
+  }
+}
+</script>
+```
+
+# 总结
+
+也是最近才悟到vue的插件作用，以及`Vue.extend()`的作用；下面说下自己的心得。
+
+首先清楚vue的组件有两种用法：
+
+```js
+// 用法1当做嵌入到模板中，作为标签使用
+比如使用如下：
+<div>
+	<toast />
+</div>
+
+// 用法2当做对象使用(需要借助Vue.extend()和new将toast组件转成toast对象，然后将toast对象挂载到Vue的原型上)
+比如使用如下：
+在其他组件中使用this.$toast.show(xxx,xxx);调用toast对象的show方法完成某些操作
+```
+
+Vue.extend()作用也很明了了，就是当组件不想以组件标签的方式使用时，而是以对象的方式使用，就可以使用Vue.extend()将组件转成对象使用。
